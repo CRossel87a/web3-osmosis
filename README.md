@@ -10,6 +10,8 @@ server = 'https://lcd.osmosis.zone'
 
 conn = Osmosis(server)
 
+# using pool_id 633, USDC.gr / OSMO
+
 liquidity = conn.get_pool_liquidity(633)
 
 t0 = list(liquidity.keys())[0]

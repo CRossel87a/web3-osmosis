@@ -13,7 +13,7 @@ class Osmosis():
         
         
     # 633 = USDC.gr / OSMO
-        
+    # https://github.com/osmosis-labs/osmosis    
     def get_pool_liquidity(self, pool_id) -> dict:
         query = f'{self.server}/osmosis/gamm/v1beta1/pools/{pool_id}/total_pool_liquidity'
         
@@ -37,10 +37,17 @@ class Osmosis():
         return float(r['spot_price'])
     
     
-    def GetAmountOut(self, pool_id, payer,amountIn) -> float: # not working
+    # https://github.com/osmosis-labs/osmosis/blob/9f14694c49340a6f0cf1c4d4121a3547be69a501/x/poolmanager/router_test.go
+    def GetAmountOut(self, pool_id, payer,amountIn,token_out) -> float: # not working
         query = f'{self.server}/osmosis/gamm/v1beta1/{pool_id}/estimate/swap_exact_amount_in'
         
-        params = {'sender':payer,'tokenIn':str(amountIn)}
+        routes = [{
+                  "poolId": pool_id,
+                  "tokenOutDenom": token_out
+                }]
+                
+        params = {'sender':payer,'tokenIn':str(amountIn), 'routes':routes}
+        #params = {'sender':payer,'tokenIn':str(amountIn), "tokenOutDenom": token_out}
         
         r = requests.get(url=query, params=params).json()
         
